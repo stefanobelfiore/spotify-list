@@ -1,13 +1,19 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
-/* 
-
-    You can write your own styles here...
+button{
+    width: 3rem;
+    background-color: silver;
+    border-radius: 2rem;
+}
+body{
+    background-image: url("https://images.pexels.com/photos/290660/pexels-photo-290660.jpeg?cs=srgb&dl=pexels-pixabay-290660.jpg&fm=jpg");
+    background-size: contain;
+}
+h1{
+    color:gold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div{
     
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
-
-*/
+    color:rgb(240, 163, 163)
+}
