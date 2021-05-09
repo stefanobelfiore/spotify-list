@@ -8,6 +8,7 @@ button{
 body{
     background-image: url("https://images.pexels.com/photos/290660/pexels-photo-290660.jpeg?cs=srgb&dl=pexels-pixabay-290660.jpg&fm=jpg");
     background-size: contain;
+    
 }
 h1{
     color:gold;
@@ -16,4 +17,10 @@ h1{
 div{
     
     color:rgb(240, 163, 163)
+}
+.onPlaying{
+    color:black
+}
+.onPause{
+    color:rgb(240, 163, 163);
 }

@@ -7,7 +7,8 @@ export function Home() {
 	const [listOfSongs, setListOfSongs] = useState([]); //----------------Array cada fichero canción
 
 	const [urlSong, setUrlSong] = useState(""); //--------------------string url cada canción
-	const [playSong, setplaySong] = useState(false); //----------------------estado button play/pause
+	const [playSong, setplaySong] = useState(false); //----------------------estado canciones play/pause
+	const AUDIO = document.querySelector("#audio"); //----------------guardar url audio en una variable fuente w3school
 
 	useEffect(() => {
 		getSongs();
@@ -39,33 +40,47 @@ export function Home() {
 				{listOfSongs.map(oneSong => {
 					return (
 						<div
-							className={mainUrl.concat(oneSong.url)}
-							key={oneSong.url}
+							className={
+								mainUrl.concat(oneSong.url) == urlSong //--------si la canciòn actual es la clickada y tiene la misma url cambia estilo css
+									? "onPlaying"
+									: "onPause"
+							}
+							key={oneSong.url} //----elemento para distinguir una de otra y cambiar el color
 							onClick={() => {
 								setUrlSong(mainUrl.concat(oneSong.url));
 								console.log(oneSong, "mysinglesong");
 								setplaySong(true);
+								AUDIO.load();
+								AUDIO.play();
+								if (playSong == true) {
+									//--------------------------------------razón por la cual he dado el booleano al estado
+									AUDIO.pause();
+									setplaySong(false); //----------------si no hay que darle play y pause directamente no hace falta
+								}
 							}}>
 							{oneSong.name}
 						</div>
-					);
+					); //---------------------tengo que hacer una función para poder darle a play si està en false o en true para cada button
 				})}
 				<div className="centering">
 					<button>
 						<i className="fa fa-backward" />
 					</button>
-					<button>
+					<button onClick={() => AUDIO.pause()}>
 						<i className="fa fa-pause" />
 					</button>
-					<button className="push--skeuo">
+					<button
+						className="push--skeuo"
+						onClick={() => AUDIO.play()}>
 						<i className="fa fa-play" />
 					</button>
 					<button>
 						<i className="fa fa-forward" />
 					</button>
 				</div>
-				<audio id="player">
+				<audio id="audio">
 					<source src={urlSong} type="audio/mpeg" />
+					Your browser does not support the audio element.
 				</audio>
 			</div>
 		</Fragment>
