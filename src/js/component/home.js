@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 //create your first component
 export function Home() {
+	let mainUrl = "https://assets.breatheco.de/apis/sound/";
 	const [listOfSongs, setListOfSongs] = useState([]); //----------------Array cada fichero canción
-	console.log(listOfSongs, "fafafafafafaf");
+
 	const [urlSong, setUrlSong] = useState(""); //--------------------string url cada canción
 	const [playSong, setplaySong] = useState(false); //----------------------estado button play/pause
 
@@ -31,30 +32,43 @@ export function Home() {
 	}
 
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!</h1>
+		<Fragment>
+			<div className="text-center mt-5">
+				<h1>Yours songs, it`s friday and your body knows it</h1>
 
-			{listOfSongs.map(oneSong => {
-				return (
-					<div
-						className={"https://assets.breatheco.de/apis/sound/".concat(
-							oneSong.url
-						)}
-						// key={oneSong.url}????????????????
-						onClick={() => {
-							setUrlSong(
-								"https://assets.breatheco.de/apis/sound/".concat(
-									oneSong.url
-								)
-							);
-
-							setplaySong(true);
-						}}>
-						{oneSong.name}
-					</div>
-				);
-			})}
-		</div>
+				{listOfSongs.map(oneSong => {
+					return (
+						<div
+							className={mainUrl.concat(oneSong.url)}
+							key={oneSong.url}
+							onClick={() => {
+								setUrlSong(mainUrl.concat(oneSong.url));
+								console.log(oneSong, "mysinglesong");
+								setplaySong(true);
+							}}>
+							{oneSong.name}
+						</div>
+					);
+				})}
+				<div className="centering">
+					<button>
+						<i className="fa fa-backward" />
+					</button>
+					<button>
+						<i className="fa fa-pause" />
+					</button>
+					<button className="push--skeuo">
+						<i className="fa fa-play" />
+					</button>
+					<button>
+						<i className="fa fa-forward" />
+					</button>
+				</div>
+				<audio id="player">
+					<source src={urlSong} type="audio/mpeg" />
+				</audio>
+			</div>
+		</Fragment>
 	);
 }
 
