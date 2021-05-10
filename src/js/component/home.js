@@ -5,15 +5,12 @@ import rigoImage from "../../img/rigo-baby.jpg";
 export function Home() {
 	let mainUrl = "https://assets.breatheco.de/apis/sound/";
 	const [listOfSongs, setListOfSongs] = useState([]); //----------------Array cada fichero canción
-
+	const [myIndex, setMyIndex] = useState(null);
 	const [urlSong, setUrlSong] = useState(""); //--------------------string url cada canción
 	const [playSong, setplaySong] = useState(false); //----------------------estado canciones play/pause
 	const AUDIO = document.querySelector("#audio"); //----------------guardar url audio en una variable fuente w3school
 
 	useEffect(() => {
-		getSongs();
-	}, []);
-	function getSongs() {
 		fetch("https://assets.breatheco.de/apis/sound/songs")
 			.then(function(response) {
 				console.log(response);
@@ -30,38 +27,45 @@ export function Home() {
 			.catch(function(error) {
 				console.log("Looks like there was a problem: \n", error);
 			});
-	}
+	}, []);
+	const nextOne = () => {
+		console.log("next", myIndex);
+		if (playSong) {
+			setUrlSong(listOfSongs[myIndex + 1]);
+			setMyIndex(myIndex + 1);
+			AUDIO.load();
+			AUDIO.play();
+		}
+	};
+	const printSongs = listOfSongs.map((oneSong, index) => {
+		return (
+			<div
+				className={
+					mainUrl.concat(oneSong.url) == urlSong //--------si la canciòn actual es la clickada y tiene la misma url cambia estilo css
+						? "onPlaying"
+						: "onPause"
+				}
+				key={index.toString()} //----elemento para distinguir una de otra y cambiar el color
+				onClick={() => {
+					setUrlSong(mainUrl.concat(oneSong.url));
+
+					setMyIndex(index);
+					setplaySong(true);
+					AUDIO.load();
+					AUDIO.play();
+				}}>
+				{oneSong.name}
+			</div>
+		);
+	});
 
 	return (
 		<Fragment>
 			<div className="text-center mt-5">
 				<h1>Yours songs, it`s friday and your body knows it</h1>
 
-				{listOfSongs.map(oneSong => {
-					return (
-						<div
-							className={
-								mainUrl.concat(oneSong.url) == urlSong //--------si la canciòn actual es la clickada y tiene la misma url cambia estilo css
-									? "onPlaying"
-									: "onPause"
-							}
-							key={oneSong.url} //----elemento para distinguir una de otra y cambiar el color
-							onClick={() => {
-								setUrlSong(mainUrl.concat(oneSong.url));
-								console.log(oneSong, "mysinglesong");
-								setplaySong(true);
-								AUDIO.load();
-								AUDIO.play();
-								if (playSong == true) {
-									//--------------------------------------razón por la cual he dado el booleano al estado
-									AUDIO.pause();
-									setplaySong(false); //----------------si no hay que darle play y pause directamente no hace falta
-								}
-							}}>
-							{oneSong.name}
-						</div>
-					); //---------------------tengo que hacer una función para poder darle a play si està en false o en true para cada button
-				})}
+				{printSongs}
+
 				<div className="centering">
 					<button>
 						<i className="fa fa-backward" />
@@ -74,7 +78,7 @@ export function Home() {
 						onClick={() => AUDIO.play()}>
 						<i className="fa fa-play" />
 					</button>
-					<button>
+					<button onClick={() => nextOne()}>
 						<i className="fa fa-forward" />
 					</button>
 				</div>
