@@ -5,7 +5,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 export function Home() {
 	let mainUrl = "https://assets.breatheco.de/apis/sound/";
 	const [listOfSongs, setListOfSongs] = useState([]); //----------------Array cada fichero canción
-	const [myIndex, setMyIndex] = useState(null);
+	const [myIndex, setMyIndex] = useState(-1);
 	const [urlSong, setUrlSong] = useState(""); //--------------------string url cada canción
 	const [playSong, setplaySong] = useState(false); //----------------------estado canciones play/pause
 	const AUDIO = document.querySelector("#audio"); //----------------guardar url audio en una variable fuente w3school
@@ -28,24 +28,24 @@ export function Home() {
 				console.log("Looks like there was a problem: \n", error);
 			});
 	}, []);
-	const nextOne = () => {
-		console.log("next", myIndex);
-		if (playSong) {
-			setUrlSong(listOfSongs[myIndex + 1]);
-			setMyIndex(myIndex + 1);
-			AUDIO.load();
-			AUDIO.play();
-		}
-	};
+	// const nextOne = () => {
+	// 	console.log("next", myIndex);
+	// 	if (playSong) {
+	// 		setUrlSong(listOfSongs[myIndex + 1]);
+	// 		setMyIndex(myIndex + 1);
+	// 		AUDIO.load();
+	// 		AUDIO.play();
+	// 	}
+	// };
 	const printSongs = listOfSongs.map((oneSong, index) => {
 		return (
 			<div
 				className={
-					mainUrl.concat(oneSong.url) == urlSong //--------si la canciòn actual es la clickada y tiene la misma url cambia estilo css
+					mainUrl.concat(index.toString()) == urlSong //--------si la canciòn actual es la clickada y tiene la misma url cambia estilo css
 						? "onPlaying"
 						: "onPause"
 				}
-				key={index.toString()} //----elemento para distinguir una de otra y cambiar el color
+				key={oneSong.url} //----elemento para distinguir una de otra y cambiar el color
 				onClick={() => {
 					setUrlSong(mainUrl.concat(oneSong.url));
 
@@ -58,6 +58,28 @@ export function Home() {
 			</div>
 		);
 	});
+
+	function nextSong(songIndex) {
+		let newurl = "";
+		console.log(songIndex);
+		if (listOfSongs[songIndex + 1]) {
+			console.log("if");
+
+			newurl = mainUrl.concat(listOfSongs[songIndex + 1].url);
+			setUrlSong(newurl);
+			setMyIndex(songIndex + 1);
+			AUDIO.load();
+			AUDIO.play();
+		} else {
+			console.log("else");
+
+			newurl = mainUrl.concat(listOfSongs[0].url);
+			setUrlSong(newurl);
+			setMyIndex(0);
+			AUDIO.load();
+			AUDIO.play();
+		}
+	}
 
 	return (
 		<Fragment>
@@ -78,7 +100,7 @@ export function Home() {
 						onClick={() => AUDIO.play()}>
 						<i className="fa fa-play" />
 					</button>
-					<button onClick={() => nextOne()}>
+					<button onClick={() => nextSong(myIndex)}>
 						<i className="fa fa-forward" />
 					</button>
 				</div>
