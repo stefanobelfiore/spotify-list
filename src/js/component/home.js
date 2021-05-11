@@ -28,15 +28,7 @@ export function Home() {
 				console.log("Looks like there was a problem: \n", error);
 			});
 	}, []);
-	// const nextOne = () => {
-	// 	console.log("next", myIndex);
-	// 	if (playSong) {
-	// 		setUrlSong(listOfSongs[myIndex + 1]);
-	// 		setMyIndex(myIndex + 1);
-	// 		AUDIO.load();
-	// 		AUDIO.play();
-	// 	}
-	// };
+
 	const printSongs = listOfSongs.map((oneSong, index) => {
 		return (
 			<div
@@ -61,19 +53,33 @@ export function Home() {
 
 	function nextSong(songIndex) {
 		let newurl = "";
-		console.log(songIndex);
-		if (listOfSongs[songIndex + 1]) {
-			console.log("if");
 
+		if (listOfSongs[songIndex + 1]) {
 			newurl = mainUrl.concat(listOfSongs[songIndex + 1].url);
 			setUrlSong(newurl);
 			setMyIndex(songIndex + 1);
 			AUDIO.load();
 			AUDIO.play();
 		} else {
-			console.log("else");
-
 			newurl = mainUrl.concat(listOfSongs[0].url);
+			setUrlSong(newurl);
+			setMyIndex(0);
+			AUDIO.load();
+			AUDIO.play();
+		}
+	}
+
+	function previusSong(songIndex) {
+		let newurl = "";
+
+		if (listOfSongs[songIndex - 1]) {
+			newurl = mainUrl.concat(listOfSongs[songIndex - 1].url);
+			setUrlSong(newurl);
+			setMyIndex(songIndex - 1);
+			AUDIO.load();
+			AUDIO.play();
+		} else {
+			newurl = mainUrl.concat(listOfSongs[21].url);
 			setUrlSong(newurl);
 			setMyIndex(0);
 			AUDIO.load();
@@ -89,7 +95,7 @@ export function Home() {
 				{printSongs}
 
 				<div className="centering">
-					<button>
+					<button onClick={() => previusSong(myIndex)}>
 						<i className="fa fa-backward" />
 					</button>
 					<button onClick={() => AUDIO.pause()}>
