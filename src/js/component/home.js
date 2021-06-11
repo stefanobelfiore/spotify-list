@@ -6,7 +6,9 @@ export function Home() {
 	let mainUrl = "https://assets.breatheco.de/apis/sound/";
 	const [listOfSongs, setListOfSongs] = useState([]); //----------------Array cada fichero canción
 	const [myIndex, setMyIndex] = useState(-1);
-	const [urlSong, setUrlSong] = useState(""); //--------------------string url cada canción
+	const [urlSong, setUrlSong] = useState(
+		"https://assets.breatheco.de/apis/sound/files/mario/songs/castle.mp3"
+	); //--------------------string url cada canción
 	const [playSong, setplaySong] = useState(false); //----------------------estado canciones play/pause
 	const AUDIO = document.querySelector("#audio"); //----------------guardar url audio en una variable fuente w3school
 
